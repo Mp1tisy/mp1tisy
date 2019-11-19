@@ -9,9 +9,41 @@
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/iconfont.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="./js/bootstrap/css/bootstrap.min.css">
+    <style>
+        .btn1 {
+            background-color: #337ab7;
+            border-color: #2e6da4;
+            color: white;
+        }
+
+        .btn1:hover {
+            background-color: #286090;
+            border-color: #2e6da4;
+            color: white;
+        }
+    </style>
 </head>
 
 <body>
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Modal title</h4>
+                </div>
+                <div class="modal-body">
+                    <p>One fine body&hellip;</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn1" data-dismiss="modal">Close</button>
+                    <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
     <div class="main_wrap">
         <div class="header">
             <a href="#" class="logo"><img src="images/logo.png" alt=""></a>
@@ -25,12 +57,39 @@
                 <i class="iconfont icon-key"></i>
                 <input type="text" class="input_txt" placeholder="邮箱/手机号">
                 <input type="password" class="input_pass" placeholder="密码">
-                <input type="submit" class="input_sub" value="登 录">
+                <input type="button" class="input_sub" value="登 录">
             </form>
         </div>
 
-    </div> 
+    </div>
+    <script src="./js/jquery-1.12.4.min.js"></script>
+    <script src="./js/bootstrap/js/bootstrap.min.js"></script>
+    <script src="./js/utils/user.js"></script>
+    <script>
+        $('.input_sub').click(function () {
+            var uname = $('.input_txt').val().trim();
+            var password = $('.input_pass').val().trim();
+            if (uname == '' || password == '') {
+                $('#myModal').modal('show');
+                $('.modal-body p').html('&nbsp;&nbsp;&nbsp;账号或密码输入不可为空')
+            }
+            else {
+                user.login(uname, password, function (res) {
+                    if (res.code == '200') {
+                        $('#myModal').modal('show');
+                        $('.modal-body p').html('&nbsp;&nbsp;&nbsp;' + res.msg);
+                        location.href = './index.html';
+                    }
+                    if (res.code == '400') {
+                        $('#myModal').modal('show');
+                        $('.modal-body p').html('&nbsp;&nbsp;&nbsp;' + res.msg);
+                    }
 
+                });
+            }
+
+        })
+    </script>
 </body>
 
 </html>
