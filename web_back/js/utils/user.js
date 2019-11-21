@@ -1,13 +1,26 @@
 var user = {
     login: function (name, password, fn) {
         $.ajax({
-            url: 'http://localhost:8000/admin/login',
+            url: URLS.user_login,
             type: 'post',
             data: {
                 user_name: name,
                 password: password
             },
-            success: fn
+            success: function(res){
+                fn(res);
+            }
+        })
+    },
+
+
+    logout:function(fn){
+        $.ajax({
+            url:URLS.user_logout,
+            type:'post',
+            success:function(res){
+                fn(res);
+            }
         })
     }
 }
