@@ -22,5 +22,16 @@ var user = {
                 fn(res);
             }
         })
+    },
+
+
+    getuser:function(fn){
+        $.ajax({
+            url:URLS.user_getuser,
+            type:'get',
+            success:function(res){
+                fn(res);
+            }
+        })
     }
 }

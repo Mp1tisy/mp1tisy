@@ -35,8 +35,8 @@
     <div class="sider">
         <a href="#" class="logo"><img src="images/logo02.png" alt="logo"></a>
         <div class="user_info">
-            <img src="images/2.jpg" alt="person">
-            <span>欢迎&nbsp;&nbsp;李思思</span>
+            <img class="headpic" src="" alt="person">
+            <span>欢迎&nbsp;&nbsp;<i style="font-style: normal;"></i></span>
             <b>管理员</b>
         </div>
         <div class="menu">
@@ -67,7 +67,7 @@
         </form>
         <div class="user_center_link">
             <a href="user.html" onclick="setMenu(3,0)" target="main_frame">个人中心</a>
-            <img src="images/2.jpg" alt="person">
+            <img class="headpic" src="" alt="">
             <a href="javascript:;" id="exit"><i class="iconfont icon-tuichu"></i> 退出</a>
         </div>
     </div>
@@ -138,8 +138,18 @@
 
         $('.btn-primary').click(function () {
             user.logout(function (res) {
-                location.href='./login.html';
+                if (res.code == '200') {
+                    location.href = './login.html';
+                }
             })
+        })
+
+        user.getuser(function(res){
+            if(res.code=='200'){
+                console.log(res.data.nickname,res.data.user_pic);
+                $('.headpic').prop('src',res.data.user_pic);
+                $('.user_info i').text(res.data.nickname)
+            }
         })
 
     </script>
