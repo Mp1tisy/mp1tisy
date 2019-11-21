@@ -131,6 +131,7 @@
     <script src="./js/bootstrap/js/bootstrap.min.js"></script>
     <script src="./js/utils/config.js"></script>
     <script src="./js/utils/user.js"></script>
+    <script src="./js/utils/category.js"></script>
     <script>
         $('#exit').click(function () {
             $('#myModal').modal('show');
@@ -146,12 +147,10 @@
 
         user.getuser(function(res){
             if(res.code=='200'){
-                console.log(res.data.nickname,res.data.user_pic);
                 $('.headpic').prop('src',res.data.user_pic);
                 $('.user_info i').text(res.data.nickname)
             }
         })
-
     </script>
 
 </body>
