@@ -8,5 +8,7 @@ var URLS = {
     category_search:commenUrl+'admin/category_search',
     category_delete:commenUrl+'admin/category_delete',
     category_add:commenUrl+'admin/category_add',
-    category_edit:commenUrl+'admin/category_edit'
+    category_edit:commenUrl+'admin/category_edit',
+
+    article_search:commenUrl+'admin/search'
 }
