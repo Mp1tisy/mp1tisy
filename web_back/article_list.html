@@ -23,18 +23,13 @@
                 <div class="col-xs-6">
                     <form class="form-inline">
                         <select id="selCategory" name="" class="form-control input-sm">
-                            <option>所有分类</option>
-                            <option>未分类</option>
-                            <option>奇趣事</option>
-                            <option>会生活</option>
-                            <option>爱旅行</option>
                         </select>
                         <select id="selStatus" name="" class="form-control input-sm">
-                            <option>所有状态</option>
-                            <option value="drafted">草稿</option>
-                            <option value="published">已发布</option>
+                            <option value="">所有状态</option>
+                            <option>草稿</option>
+                            <option>已发布</option>
                         </select>
-                        <button id="btnSearch" class="btn btn-default btn-sm">筛选</button>
+                        <button type="button" id="btnSearch" class="btn btn-default btn-sm">筛选</button>
                     </form>
                 </div>
                 <div class="col-xs-6">
@@ -54,38 +49,11 @@
                     </tr>
                 </thead>
                 <tbody>
-
-
-
-                    <tr>
-                        <td>王积千造统最头</td>
-                        <td>杰克</td>
-                        <td>奇趣事</td>
-                        <td class="text-center">2017-06-08 07:08:46</td>
-                        <td class="text-center">已发布</td>
-                        <td class="text-center">
-                            <a href="article_edit.html" class="btn btn-default btn-xs">编辑</a>
-                            <a href="javascript:deleteTr( 1005 );" class="btn btn-danger btn-xs">删除</a>
-                        </td>
-                    </tr>
-
-
                 </tbody>
             </table>
 
             <div class="row text-center">
                 <ul id="pagination-demo" class="pagination pagination-sm">
-                    <!-- <li class="page-item first disabled"><a href="#" class="page-link">首页</a></li>
-                    <li class="page-item prev disabled"><a href="#" class="page-link">上一页</a></li>
-                    <li class="page-item active"><a href="#" class="page-link">1</a></li>
-                    <li class="page-item"><a href="#" class="page-link">2</a></li>
-                    <li class="page-item"><a href="#" class="page-link">3</a></li>
-                    <li class="page-item"><a href="#" class="page-link">4</a></li>
-                    <li class="page-item"><a href="#" class="page-link">5</a></li>
-                    <li class="page-item"><a href="#" class="page-link">6</a></li>
-                    <li class="page-item"><a href="#" class="page-link">7</a></li>
-                    <li class="page-item next"><a href="#" class="page-link">下一页</a></li>
-                    <li class="page-item last"><a href="#" class="page-link">尾页</a></li> -->
                 </ul>
             </div>
 
@@ -103,6 +71,7 @@
 
     <script src="./js/utils/config.js"></script>
     <script src="./js/utils/article.js"></script>
+    <script src="./js/utils/category.js"></script>
     <script src="./js/bootstrap/js/bootstrap.min.js"></script>
     <script src="./js/template-web.js"></script>
     <script id="tmp" type="text/html">
@@ -115,16 +84,27 @@
             <td class="text-center">{{item.state}}</td>
             <td class="text-center">
                 <a href="article_edit.html" class="btn btn-default btn-xs">编辑</a>
-                <a href="javascript:deleteTr( 1005 );" class="btn btn-danger btn-xs">删除</a>
+                <a href="javascript:;" delid='{{item.id}}' class="btn btn-danger btn-xs">删除</a>
             </td>
         </tr>
         {{/each}}
     </script>
+    <script id='articletype' type='text/html'>
+        <option value=''>所有分类</option>
+        {{each data item index}}
+        <option value='{{item.id}}'>{{item.name}}</option>
+        {{/each}}
+    </script>
 
     <script>
+
+        // 文章列表显示
+
         var curpage = 1;
-        function list(curpage) {
-            article.search({ page: curpage, perpage: 10 }, function (res) {
+        var type = null;
+        var state = '';
+        function list(curpage, type, state) {
+            article.search({ page: curpage, type: type, state: state, perpage: 10 }, function (res) {
                 var html = template('tmp', res);
                 $('tbody').html(html);
                 $('#pagination-demo').twbsPagination({
@@ -137,13 +117,43 @@
                     last: '尾页',
                     onPageClick: function (event, page) {
                         $('#page-content').text('page' + page);
-                        list(page);
+                        list(page, type, state);
                     }
                 })
             })
         }
 
-        list(curpage);
+        list(curpage, type, state);
+
+        // 文章类别选择列表
+
+        category.search(function (res) {
+            var html1 = template('articletype', res);
+            $('#selCategory').html(html1);
+        })
+
+        // 筛选
+
+        $('#btnSearch').click(function () {
+            var selCategory = $('#selCategory').val();
+            var selStatus = $('#selStatus').val();
+
+            list(curpage, selCategory, selStatus);
+
+        })
+
+        //删除
+
+        $('tbody').on('click', '.btn-danger', function () {
+            var delid = $(this).attr('delid');
+            article.delete(delid,function(res){
+                list(curpage, type, state);
+            })
+        })
+
+
+
+
     </script>
 
 </body>
