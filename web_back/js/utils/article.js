@@ -21,5 +21,18 @@ var article={
                 fn(res)
             }
         })
+    },
+
+    publish:function(formdata,fn){
+        $.ajax({
+            url:URLS.article_publish,
+            type:'post',
+            data:formdata,
+            processData:false,
+            contentType:false,
+            success:function(res){
+                fn(res)
+            }
+        })
     }
 }
