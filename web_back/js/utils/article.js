@@ -34,5 +34,18 @@ var article={
                 fn(res)
             }
         })
+    },
+
+    edit:function(formdata,fn){
+        $.ajax({
+            url:URLS.article_edit,
+            type:'post',
+            data:formdata,
+            processData:false,
+            contentType:false,
+            success:function(res){
+                fn(res)
+            }
+        })
     }
 }

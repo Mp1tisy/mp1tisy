@@ -12,5 +12,6 @@ var URLS = {
 
     article_search:commenUrl+'admin/search',
     article_delete:commenUrl+'admin/article_delete',
-    article_publish:commenUrl+'admin/article_publish'
+    article_publish:commenUrl+'admin/article_publish',
+    article_edit:commenUrl+'admin/article_edit'
 }

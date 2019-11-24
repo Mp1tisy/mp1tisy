@@ -97,7 +97,8 @@
 
         $('#add_article').click(function () {
             var formdata = new FormData(document.getElementById('formdata'));
-            formdata.append('state','已发布')
+            formdata.append('state','已发布');
+            formdata.set('content', tinyMCE.activeEditor.getContent());
             article.publish(formdata,function(res){
                 location.href='./article_list.html';
             })
@@ -105,7 +106,8 @@
 
         $('#save_article').click(function () {
             var formdata = new FormData(document.getElementById('formdata'));
-            formdata.append('state','草稿')
+            formdata.append('state','草稿');
+            formdata.set('content', tinyMCE.activeEditor.getContent());
             article.publish(formdata,function(res){
                 location.href='./article_list.html';
             })
