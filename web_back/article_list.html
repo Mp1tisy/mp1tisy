@@ -103,10 +103,19 @@
         var curpage = 1;
         var type = null;
         var state = '';
+        var curtotalpage = null;
         function list(curpage, type, state) {
             article.search({ page: curpage, type: type, state: state, perpage: 10 }, function (res) {
                 var html = template('tmp', res);
                 $('tbody').html(html);
+
+                //总页数实时更新
+
+                if (res.totalPage != curtotalpage) {
+                    $('#pagination-demo').twbsPagination('destroy');
+                }
+                curtotalpage = res.totalPage;
+
                 $('#pagination-demo').twbsPagination({
                     totalPages: res.totalPage,
                     visiblePages: 7,
@@ -117,10 +126,20 @@
                     last: '尾页',
                     onPageClick: function (event, page) {
                         list(page, type, state);
+
+                        //删除
+
+                        $('tbody').on('click', '.btn-danger', function () {
+                            var delid = $(this).attr('delid');
+                            article.delete(delid, function (res) {
+                                list(page, type, state);
+                            })
+                        })
                     }
                 })
             })
         }
+
 
         list(curpage, type, state);
 
@@ -141,14 +160,6 @@
 
         })
 
-        //删除
-
-        $('tbody').on('click', '.btn-danger', function () {
-            var delid = $(this).attr('delid');
-            article.delete(delid,function(res){
-                list(curpage, type, state);
-            })
-        })
 
     </script>
 
